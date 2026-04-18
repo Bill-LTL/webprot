@@ -1,0 +1,13 @@
+# 忽略 VSCode 的設定與快取
+.vscode/
+
+# 忽略編譯產生的執行檔
+a.out
+*.exe
+web_protect
+
+# 忽略編譯產生的中間檔
+*.o
+*.db
+*.db-shm
+*.db-wal
