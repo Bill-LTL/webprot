@@ -49,7 +49,7 @@ int main() {
     while(status != -1) {
         read_config(&first, get_now());
         status = failover_core(get_now());
-        printf("%s [監控] 監控循環結束，等待下一次檢查...\n", get_now());
+        printf("%s [監控] 監控循環結束，等待下一次檢查...wait for %s sec\n", get_now(), cfg.waittime);
         sleep(atoi(cfg.waittime)); 
     }
     
