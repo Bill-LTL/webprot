@@ -14,6 +14,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "readconfig.h"
+
 const char* get_now();//獲取當前時間函數
 
 char *run_cmd(const char *time, const char cmd[]);//執行命令並回傳輸出結果函數
@@ -47,9 +48,9 @@ char *run_cmd(const char *time, const char cmd[]) {
         printf("%s 無法執行命令: %s\n",time, cmd);
         return NULL;
     }
-    static char buffer[128];
+    static char buffer[1024];
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-        printf("%s 執行讀取: %s", time, buffer);
+        printf("%s 執行讀取: %s\n", time, buffer);
     }
     PCLOSE(fp);
     
