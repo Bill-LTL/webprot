@@ -73,7 +73,7 @@ char failover_core(const char *time) {
     int is_down = system(cmd); 
 
     if (is_down != 0) {  //0爲ping通，非0爲ping不通
-        // --- 服務器離線 ---
+        // --- 離線 ---
         if (last_state == 0) {
             printf("%s [警報] 服務器 %s 離線！正在切換 DNS 至宿主機...\n", time, ip6.sever);
             
@@ -85,7 +85,7 @@ char failover_core(const char *time) {
             printf("%s [維持] 服務器仍離線，宿主機持續代理中。\n", time);
         }
     } else {
-        // --- 服務器在線 ---
+        // --- 在線 ---
         if (last_state == 0) {
             // 正常狀態
             printf("%s [正常] 服務器運作中。\n", time);
@@ -158,7 +158,7 @@ void get_dns_v6_from_api(const char *time, char *output) {
         "-H \"Content-Type: application/json\"",
         cfg.zoneID, cfg.recordID, cfg.api);
 
-    // 調用 run_cmd
+    
     char *response = run_cmd(time, cmd);
 
     if (response != NULL) {
