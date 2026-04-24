@@ -46,8 +46,6 @@ void read_config(const char *time) {
         }
     }
     fclose(fp);
-    printf("%s api: %s\n", time, cfg.api);
-    printf("%s system: %s\n", time, SYSTEM);
 }    
 
 //實現填充功能，將key對應到結構體成員並賦值
