@@ -4,9 +4,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 const char* get_now();//獲取當前時間函數
-void read_config();   //讀取配置文件函數
-void auto_fill(char *key, char *val);//自動填充配置結構體函數
-char *run_cmd(const char cmd[]);//執行命令並回傳輸出結果函數
+void read_config(const char *time);   //讀取配置文件函數
+void auto_fill(const char *time, char *key, char *val);//自動填充配置結構體函數
+char *run_cmd(const char *time, const char cmd[]);//執行命令並回傳輸出結果函數
 
 
 const char *getipv6;  //於填充函數中獲得賦值「void auto_fill(char *key, char *val)」
@@ -59,7 +59,9 @@ const char* get_now() {
     
     return buffer;
 }
-void read_config() {
+
+
+void read_config(const char *time) {
 //讀取配置文件
     char key[64];
     char value[64];
@@ -67,13 +69,13 @@ void read_config() {
     FILE *fp = fopen(".config", "r");
     while (fgets(line, sizeof(line), fp)) {
         if(sscanf(line, " %[^ \t=] = %s", key, value) == 2){
-            printf("%s 已解析: key=[%s], value=[%s]\n", get_now(), key, value);
-            auto_fill(key, value);
+            printf("%s 已解析: key=[%s], value=[%s]\n", time, key, value);
+            auto_fill(time, key, value);
         }
     }
     fclose(fp);
-    printf("%s api: %s\n", get_now(), cfg.api);
-    printf("%s system: %s\n", get_now(), SYSTEM);
+    printf("%s api: %s\n", time, cfg.api);
+    printf("%s system: %s\n", time, SYSTEM);
 }    
 
 //實現填充功能，將key對應到結構體成員並賦值
@@ -81,7 +83,7 @@ void read_config() {
 
 
 //匹配key到變量,賦值value,,,,獲取IPv6命令（無則默認）
-void auto_fill(char *key, char *val) {
+void auto_fill(const char *time, char *key, char *val) {
     
     for (int i = 0; i < sizeof(map) / sizeof(map[0]); i++) {
         if (strcmp(key, map[i].name) == 0) {            
@@ -93,16 +95,16 @@ void auto_fill(char *key, char *val) {
 }
 
 //讀取命令輸出
-char *run_cmd(const char cmd[]) {
-    printf("%s 執行命令: %s\n", get_now(), cmd);
+char *run_cmd(const char *time, const char cmd[]) {
+    printf("%s 執行命令: %s\n", time, cmd);
     FILE *fp = POPEN(cmd, "r");
     if (fp == NULL) {
-        printf("%s 無法執行命令: %s\n", get_now(), cmd);
+        printf("%s 無法執行命令: %s\n",time, cmd);
         return NULL;
     }
     static char buffer[128];
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-        printf("%s 執行讀取: %s", get_now(), buffer);
+        printf("%s 執行讀取: %s", time, buffer);
     }
     PCLOSE(fp);
     

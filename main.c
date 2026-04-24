@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 int main() {
-    read_config();    
+    read_config(get_now());
     //優先自定義獲取ipv6命令
     if(strcmp(cfg.cmd_get6, "default") == 0){
         getipv6 = "ip -6 addr show enp6s0 | grep 'scope global' | grep '/128' | awk '{print $2}' | cut -d'/' -f1";
@@ -14,11 +14,11 @@ int main() {
     }
    
     char *ipv6 ;
-    ipv6 = run_cmd(getipv6);
+    ipv6 = run_cmd(get_now(), getipv6);
 
     while(1){
-        read_config();
-        printf("%s %s監控中...\n", get_now(), ipv6);
+        read_config(get_now());
+        printf("%s 監控中: %s", get_now(), ipv6);
         sleep(5);
     }
 
