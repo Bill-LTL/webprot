@@ -86,7 +86,7 @@ char failover_core(char *last_state, const char *time) {
             update_dns_api(time, ip6.host_ip);            
             *last_state = 1; // 切換狀態
         }else{
-            printf("%s 你是怎麼讓這個bug運行起來的？？！\n", time);
+            printf("%s 看來配置出問題了\n", time);
         }
     } else {
         // --- 在線 ---
