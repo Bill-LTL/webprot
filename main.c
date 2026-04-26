@@ -27,6 +27,7 @@ struct ip6_info {
 } ip6;
 
 int main() {
+    check_env();
     //---------------------初始化結構體---------------------
     char last_state = 0; // 0: 正常, 1: 離線
     char first = 0;
@@ -41,16 +42,7 @@ int main() {
         printf("%s 使用配置文件獲取IPv6命令: %s\n", get_now(), getipv6);  
     }
 
-    //優先自定義ping指令
-    if(strcmp(cfg.ping6, "default") == 0 || strcmp(cfg.ping6,"") == 0){
-        ping6 = "ping -6 -c 3 ";
-        printf("%s 使用預設獲取ping命令: %s\n", get_now(), ping6);  
-            
-    }else{
-        ping6 = cfg.ping6;
-        cmd_0 = ""; //如果配置文件中有自定義ping命令，則不再使用默認丟棄輸出後綴
-        printf("%s 使用配置文件ping命令: %s\n", get_now(), ping6);  
-    }
+
 
     char full_cmd[512];
 
@@ -82,7 +74,7 @@ char failover_core(char *last_state, const char *time) {
     // 存活檢查
     char cmd[256];
     get_dns_v6_from_api(get_now(), ip6.target_ip);
-    snprintf(cmd, sizeof(cmd), "%s %s %s", ping6, ip6.target_ip, cmd_0);
+    snprintf(cmd, sizeof(cmd), "fping -6 -c 3 -t 1000 -q %s > /dev/null 2>&1",ip6.target_ip);
     
     // 執行命令並獲取狀態
     int status;
