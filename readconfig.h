@@ -38,6 +38,7 @@ struct Config {
     char ttl[8];
     char proxy[8];
     char ping6[128];
+
 } cfg;
 
 //-----------配置變量偏移量表------------
@@ -55,7 +56,9 @@ struct {
     {"waittime", offsetof(struct Config, waittime)},
     {"ttl", offsetof(struct Config, ttl)},
     {"proxy", offsetof(struct Config, proxy)},
-    {"ping6", offsetof(struct Config, ping6)}
+    {"ping6", offsetof(struct Config, ping6)},
+
+
 };
 //-------------------------------------
 
@@ -71,7 +74,7 @@ void read_config(char *first, const char *time) {
     return; 
     }
     while (fgets(line, sizeof(line), fp)) {
-        if(sscanf(line, " %[^ \t=] = %s", key, value) == 2){
+        if (sscanf(line, " %[^ \t=] %*[ \t=] %[^\r\n]", key, value) == 2) {
                 if(*first==0){
                     printf("%s 已解析: key=[%s], value=[%s]\n", time, key, value);
                 }

@@ -34,7 +34,7 @@ int main() {
     read_config(&first, get_now());
     //優先自定義獲取ipv6命令
     if(strcmp(cfg.cmd_get6, "default") == 0 || strcmp(cfg.cmd_get6,"") == 0){
-        getipv6 = "ip -6 addr show enp6s0 | grep 'scope global' | grep '/128' | awk '{print $2}' | cut -d'/' -f1";
+        getipv6 = "ip -6 addr show eth0 | grep 'scope global' | grep '/128' | awk '{print $2}' | cut -d'/' -f1";
         printf("%s 使用預設獲取IPv6命令: %s\n", get_now(), getipv6);  
             
     }else{
