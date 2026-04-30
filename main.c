@@ -85,7 +85,7 @@ char failover_core(char *last_state, const char *time) {
         // --- 離線 ---
         if (*last_state == 0) {
             printf("%s [警報] 服務器 %s 離線！正在切換 DNS 至宿主機...\n", time, ip6.sever);
-            
+            strncpy(ip6.host_ip, run_cmd(get_now(), getipv6), sizeof(ip6.host_ip) - 1);
             // 呼叫 API 更新 DNS 為宿主機 IP
             update_dns_api(time, ip6.host_ip);            
             *last_state = 1; // 切換狀態
@@ -97,7 +97,7 @@ char failover_core(char *last_state, const char *time) {
         if (*last_state == 1) {
             // 接管狀態
             get_dns_v6_from_api(get_now(), ip6.target_ip);
-            
+            strncpy(ip6.host_ip, run_cmd(get_now(), getipv6), sizeof(ip6.host_ip) - 1);
             if(strcmp(ip6.target_ip, ip6.host_ip) == 0){
                 printf("%s [接管] 宿機接管運作中，DNS 已指向宿主機。\n", time);
             }else{
@@ -105,7 +105,7 @@ char failover_core(char *last_state, const char *time) {
                 printf("%s [正常] 服務器已恢復。\n", time);
             }
             }else{
-                
+                strncpy(ip6.host_ip, run_cmd(get_now(), getipv6), sizeof(ip6.host_ip) - 1);
                 if(strcmp(ip6.target_ip, ip6.host_ip) == 0){  //防止程序重啓後狀態錯誤，如果DNS已經指向宿主機，則不再切換回服務器IP
                     printf("%s [監測] DNS已指向宿主機。\n", time);
                 *last_state = 1;
