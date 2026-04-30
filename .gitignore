@@ -5,7 +5,7 @@ a.out
 *.exe
 web_protect
 
-
+*.out
 *.o
 *.db
 *.db-shm
